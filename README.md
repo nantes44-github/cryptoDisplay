@@ -36,7 +36,7 @@ https://user-images.githubusercontent.com/56247405/221525784-f8b7b6d2-f5bb-49b1-
 ### Sofware
 - Install CH340 drivers
 - Install Thonny (microPython IDE)
-- Flash microPython firmware on the board (tutorial here)
+- Flash microPython firmware on the board (tutorial : https://microdigisoft.com/getting-started-with-thonny-micropython-with-esp32-esp8266/)
 - Copy main.py and sh1106.py to the board
 - Customize main.py with your wifi setting
 - Save all on the board
