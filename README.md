@@ -1,13 +1,13 @@
 # cryptoDisplay
-A simple crypto display based on raspberry pi pico w and ssd1306
+A simple crypto display based on a Wemos D1 and an oled screen sh1106
 
 ## Bill Of Material
-1 - A raspberry pi pico w
+1 - A wimos D1
 2 - Some female to female dupont cable (shorts are good)
-3 - A ssd1306 oled screen
+3 - An sh1106 oled screen
 
 Optional:
-4 - A 3D printer to print enclosure (personnaly i used one from thingiverse. Name : octoprint monitor)
+4 - A 3D printer to print enclosure : https://www.thingiverse.com/thing:4657409
 
 ## Wiring
 Only four dupont wire are needed.
@@ -16,10 +16,10 @@ Second VCC to 3V3 on the pico W
 Third SCL to GP1 (the second pin on the left of the pico w)
 Fourth SDA to GP0 (the first on the left of the pico)
 
-if you are lost, look at google : "raspberry pico ssd1306 wiring"
+if you are lost, look at google : "wems D1 I2C screen wiring"
 :-)
 
-## Loading code to pico
+## Loading code to board
 1 - get the code from "main.py" to your local computer
 2 - download Thonny (IDE to code) from thonny.org
 3 - set all according to : https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/0
