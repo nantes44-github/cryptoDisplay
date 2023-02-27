@@ -1,6 +1,10 @@
 # cryptoDisplay a PIVX Live ticker
 A simple crypto display based on a Wemos D1 and an oled screen sh1106
-![video](pictures/demoCompressed.mov)
+
+
+
+https://user-images.githubusercontent.com/56247405/221525784-f8b7b6d2-f5bb-49b1-96ea-33bf11958828.mov
+
 
 ## Bill Of Material
 - An IoT board : wimos D1 mini (around 4$) [https://fr.aliexpress.com/item/32647729049.html]
