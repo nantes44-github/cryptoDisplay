@@ -1,107 +1,91 @@
 from machine import Pin, I2C
-from ssd1306 import SSD1306_I2C
+import sh1106
 import time
 import network
-import urequests
-import json
+import urequests as requests
 
-ssid = 'SSID_HERE'
-password = 'WIFI_KEY_HERE'
+ssid = 'WIFI_KEY_HERE'
+password = 'WIFI_PASS_HERE'
 refresh=2
 
 oledHeight=64
 oledWidth=128
 
-i2c=I2C(0,sda=Pin(0), scl=Pin(1), freq=400000)
-oled = SSD1306_I2C(oledWidth, oledHeight, i2c)
+i2c = I2C(scl=Pin(5), sda=Pin(4), freq=1600000)
+display = sh1106.SH1106_I2C(128, 64, i2c, Pin(16), 0x3c)
+display.sleep(False)
 
-def writeOnDisplay(lineOne="",lineTwo="",lineThree="", lineFour="",lineFive="",lineSix=""):
-  oled.fill(0)
-  oled.text(lineOne, 0, 0)
-  oled.text(lineTwo, 0, 10)
-  oled.text(lineThree, 0, 20)
-  oled.text(lineFour, 0, 30)
-  oled.text(lineFive, 0, 40)
-  oled.text(lineSix, 0, 50)
-  oled.show()
+def printOled(a,b="",c="",d="",e="",f=""):
+    display.rotate(False) 
+    display.fill(0)
+    display.text(a,0,0,1)
+    display.text(b,0,10,1)
+    display.text(c,0,20,1)
+    display.text(d,0,30,1)
+    display.text(e,0,40,1)
+    display.text(f,0,50,1)
+    display.show()
 
 def loadBar():
-    for i in range ((oledWidth+1)):
-        oled.pixel(i, oledHeight-2, 1)
-        oled.pixel(i+1, oledHeight-2, 1)
-        oled.pixel(i+2, oledHeight-2, 1)
-        oled.show()
-        oled.pixel(i, oledHeight-2, 0)
-        oled.pixel(i+1, oledHeight-2, 0)
-        oled.pixel(i+2, oledHeight-2, 0)
-        oled.show()
-
-def scroll_out_screen(speed):
-  time.sleep(2)
-  for i in range ((oledWidth+1)/speed):
-    for j in range (oledHeight):
-      oled.pixel(i, j, 0)
-    oled.scroll(speed,0)
-    oled.show()
+    speed=3
+    for i in range ((128/speed+1)):
+        iSpeed=i*speed
+        display.pixel(iSpeed, 62, 1)
+        display.pixel(iSpeed+1, 62, 1)
+        display.pixel(iSpeed+2, 62, 1)
+        display.show()
+        display.pixel(iSpeed, 62, 0)
+        display.pixel(iSpeed+1, 62, 0)
+        display.pixel(iSpeed+2, 62, 0)
+        display.show()
 
 def connectToWifi():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     wlan.connect(ssid, password)
+    print("connect to ",ssid)
     # Wait for connect or fail
     max_wait = 10
     while max_wait > 0:
-      if wlan.status() < 0 or wlan.status() >= 3:
-        break
-      max_wait -= 1
-      writeOnDisplay("Waiting for","connection")
-      time.sleep(1)
+        if not wlan.isconnected():
+            print(wlan.status())
+            printOled("Waiting for","connection to",ssid)
+            loadBar()
+        max_wait -= 1
+        time.sleep(1)
 
     # Handle connection error
-    if wlan.status() != 3:
-       writeOnDisplay("Connect fail","check wifi config")
-       raise RuntimeError('network connection failed')
-    else:
+    if wlan.isconnected():
       status = wlan.ifconfig()
-      writeOnDisplay("connected","IP is :",status[0])
+      printOled("connected","IP is :",status[0])
+      loadBar()
+    else:
+       printOled("Connect fail","check wifi conf","and retry.")
+       raise RuntimeError('network connection failed')
 
-def getBinanceData(symbol="ETH",currency="USDT"):
-    req=urequests.get("https://www.binance.com/bapi/asset/v2/public/asset-service/product/get-product-by-symbol?symbol="+symbol+currency)
-    jsonSymbol=json.loads(req.content)
-    return jsonSymbol["data"]#["c"]
+def getTicker(symbol):
+    data=requests.get("https://data.binance.com/api/v3/ticker?symbol="+symbol)
+    return data.json()
 
-def getCurrentPrice(data):
-    return data["c"]
-
-writeOnDisplay("Welcome to : ","Crypto Display!","Device starting","Please wait","a bit...coin")
+printOled("Hello Pivian","Welcome to : ","PIVX Live!","Device starting","Please wait","a bit...coin")
 loadBar()
-scroll_out_screen(2)
 connectToWifi()
 
 while True:
     try:
+        pivxData=getTicker("PIVXBTC")
+        ethData=getTicker("ETHUSDT")
+        btcData=getTicker("BTCUSDT")
+        pivxPrice=str(round(float(pivxData["lastPrice"])*100000000))
+        ethPrice=str(round(float(ethData["lastPrice"])))
+        btcPrice=str(round(float(btcData["lastPrice"])))
+        printOled("-=PIVX Price=-",pivxPrice+ " sat","-=ETH  Price=-",ethPrice+" usdt","-=BTC  Price=-",btcPrice+" usdt")
         loadBar()
-        pivxData=getBinanceData("PIVX","BTC")
-        pivxBtcPrice=getCurrentPrice(pivxData)
-        pivxSatPrice=str(float(pivxBtcPrice)*100000000)
-        
-        btcUsdData=getBinanceData("BTC","USDT")
-        btcUsdPrice=str(getCurrentPrice(btcUsdData))
-
-        ethUsdData=getBinanceData("ETH","USDT")
-        ethUsdPrice=str(getCurrentPrice(ethUsdData))
-        
-        writeOnDisplay("-= PIVX Live =-",pivxSatPrice+" sat","-= BTC  Live =-",btcUsdPrice + " usd","-= ETH  Live =-",ethUsdPrice+" usd")
-        
-        
-        
-        #time.sleep(refresh)
+        time.sleep(refresh)
     except:
-        writeOnDisplay("-= ERROR Live =-","Error :-(","Retrying")
+        printOled("-=   ERROR    =-","Wifi too far?","Binance down?","Retry in 10s","","Else reboot.")
         time.sleep(10)
         pass
-
-
 
 
 
