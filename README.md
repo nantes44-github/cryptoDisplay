@@ -13,14 +13,20 @@ A simple crypto display based on a Wemos D1 and an oled screen sh1106
 - Iron
 - Welding wire
 - cutting pliers
+![global view](pictures/toolsAndMaterialGlabalView.JPEG)
 
 ## Main steps
 ### Hardware
 - Cut one end of for dupont wire
+![wires](pictures/dupontCut.JPEG)
 - Solder the four wire to the board (like this)
+![solder](pictures/wiring.JPEG)
 - Connect Oled screen (like this)
+![withOled](pictures/montedView.JPEG)
 - Test
 - Put all in the case (like this)
+![in case](pictures/inCaseView.JPEG)
+![in case closed](pictures/finished.JPEG)
 
 ### Sofware
 - Install CH340 drivers
