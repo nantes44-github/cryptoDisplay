@@ -1,44 +1,25 @@
-# cryptoDisplay a PIVX Live ticker
-A simple crypto display based on a Wemos D1 and an oled screen sh1106
-
-
-
-https://user-images.githubusercontent.com/56247405/221525784-f8b7b6d2-f5bb-49b1-96ea-33bf11958828.mov
-
+# cryptoDisplay a PIVX Live ticker - bed side edition
+A simple crypto display based on a Wemos S2 and an weactstudio ePaper
 
 ## Bill Of Material
-- An IoT board : wimos D1 mini (around 4$) [https://fr.aliexpress.com/item/32647729049.html]
-- An Oled screen 1.3" : sh1106 I2C (around 3$) [https://fr.aliexpress.com/item/1005004146596540.html]
+- An IoT board : wemos S2 mini
+- An ePaper display 2.9"
 - Some wires : female to female 10 cm dupont cable (around 1.5$) [https://fr.aliexpress.com/item/1005004611997111.html]
 - A micro usb cable
-- Some foam
-- A 3d printed case [https://www.thingiverse.com/thing:4657409]
-
+- A 3d printed case
+- 
 ## Tools
 - Iron
 - Welding wire
 - cutting pliers
-![global view](pictures/toolsAndMaterialGlabalView.JPEG)
 
 ## Main steps
 ### Hardware
-- Cut one end of for dupont wire
-![wires](pictures/dupontCut.JPEG)
-- Solder the four wire to the board (like this)
-![solder](pictures/wiring.JPEG)
-- Connect Oled screen (like this)
-![withOled](pictures/montedView.JPEG)
-- Test
-- Put all in the case (like this)
-![in case](pictures/inCaseView.JPEG)
-![in case closed](pictures/finished.JPEG)
-
+- to come
+- 
 ### Sofware
-- Install CH340 drivers
-- Install Thonny (microPython IDE)
-- Flash microPython firmware on the board (tutorial : https://microdigisoft.com/getting-started-with-thonny-micropython-with-esp32-esp8266/)
-- Copy main.py and sh1106.py to the board
-- Customize main.py with your wifi setting
-- Save all on the board
+- Vscode
+- platformIO
 
-You are done ;-)
+
+Soon
