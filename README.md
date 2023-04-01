@@ -11,6 +11,7 @@ A crypto ticker display based on a Wemos S2 and a screen. Especially design for 
 - it show Btc price in dollars
 - it show Eth price in dollars
 - it show time and date
+- and why not the ability to notify a discord webhook on wallet balance change
 
 ## Bill Of Material
 - An IoT board : wemos S2 mini 
